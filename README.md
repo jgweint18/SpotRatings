@@ -11,7 +11,9 @@ Still looking to implement:
   A system that lets you rate individual songs instead of the whole playlist,
   Potentially switching from maps to classes
   Reverse the order of sort by rating
+  
 Function Breakdown:
+
   A. Add songs
     Adds songs to the file taken from the input
     This asks for both the song title and artist
