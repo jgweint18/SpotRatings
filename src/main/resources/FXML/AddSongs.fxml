@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+    <top>
+        <HBox spacing="10" style="-fx-padding: 10;">
+            <Button text="Back" onAction="#goBack"/>
+            <TextField fx:id="searchField" promptText="Search for a song or artist..." prefWidth="400"/>
+            <Button text="Search" onAction="#searchSong"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="20" style="-fx-padding: 20;" alignment="TOP_CENTER">
+            <ComboBox fx:id="searchResults" promptText="Select a song..." prefWidth="500"/>
+            <HBox spacing="20" alignment="CENTER">
+                <ImageView fx:id="albumCover" fitHeight="200.0" fitWidth="200.0" preserveRatio="true"/>
+                <VBox spacing="10" alignment="CENTER_LEFT">
+                    <Label fx:id="songTitle" text="Song Title"/>
+                    <Label fx:id="artistName" text="Artist"/>
+                    <Label fx:id="albumName" text="Album"/>
+                    <Label fx:id="releaseYear" text="Release Year"/>
+                    <Label fx:id="genre" text="Genre"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Rating:"/>
+                        <TextField fx:id="ratingField" promptText="0-10" prefWidth="80"/>
+                    </HBox>
+                    <Button text="Add Song" onAction="#addSelectedSong"/>
+                    <Button text="Add Full Album" onAction="#addFullAlbum"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
