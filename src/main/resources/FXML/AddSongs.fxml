@@ -4,17 +4,20 @@
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<BorderPane prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: #121212;"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controller">
     <top>
-        <HBox spacing="10" style="-fx-padding: 10;">
+        <HBox spacing="10" style="-fx-padding: 10; -fx-background-color: #121212;">
             <Button text="Back" onAction="#goBack"/>
-            <TextField fx:id="searchField" promptText="Search for a song or artist..." prefWidth="400"/>
+            <TextField fx:id="searchField" promptText="Search for a song or artist..." prefWidth="400" onAction="#searchSong"/>
             <Button text="Search" onAction="#searchSong"/>
         </HBox>
     </top>
     <center>
-        <VBox spacing="20" style="-fx-padding: 20;" alignment="TOP_CENTER">
+        <VBox spacing="20" style="-fx-padding: 20; -fx-background-color: #121212;" alignment="TOP_CENTER">
             <ComboBox fx:id="searchResults" promptText="Select a song..." prefWidth="500"/>
             <HBox spacing="20" alignment="CENTER">
                 <ImageView fx:id="albumCover" fitHeight="200.0" fitWidth="200.0" preserveRatio="true"/>

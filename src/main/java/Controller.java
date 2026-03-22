@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
+import javafx.application.Platform;
 
 public class Controller implements Initializable {
 
@@ -82,8 +83,28 @@ public class Controller implements Initializable {
                 }
             });
             songTable.setEditable(true);
-            songTable.setItems(songList);
-        }
+// wrap songList in a filtered list
+            javafx.collections.transformation.FilteredList<Song> filteredList = new javafx.collections.transformation.FilteredList<>(songList, p -> true);
+
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(song -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (song.getArtist() != null && song.getArtist().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    if (song.getTitle() != null && song.getTitle().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    return false;
+                });
+            });
+
+            javafx.collections.transformation.SortedList<Song> sortedList = new javafx.collections.transformation.SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(songTable.comparatorProperty());
+            songTable.setItems(sortedList);        }
     }
 
     // Load playlist from file
@@ -122,6 +143,9 @@ public class Controller implements Initializable {
             br.close();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+        for (Song s : songList) {
+            fetchArtwork(s);
         }
     }
 
@@ -169,6 +193,10 @@ public class Controller implements Initializable {
     }
 
     public void searchSong(ActionEvent e) {
+
+        if (searchResults == null) {
+            return;
+        }
         String query = searchField.getText();
         if (query == null || query.isEmpty()) {
             return;
@@ -327,5 +355,36 @@ public class Controller implements Initializable {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    private void fetchArtwork(Song song) {
+        new Thread(() -> {
+            try {
+                String query = java.net.URLEncoder.encode(song.getArtist() + " " + song.getTitle(), "UTF-8");
+                String url = "https://itunes.apple.com/search?term=" + query + "&entity=song&limit=1";
+
+                java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                        .uri(java.net.URI.create(url))
+                        .build();
+
+                java.net.http.HttpResponse<String> response = java.net.http.HttpClient.newHttpClient()
+                        .send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+                com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+                com.fasterxml.jackson.databind.JsonNode root = om.readTree(response.body());
+                com.fasterxml.jackson.databind.JsonNode results = root.get("results");
+
+                if (results != null && results.size() > 0) {
+                    String artUrl = results.get(0).get("artworkUrl100").asText();
+                    String album = results.get(0).get("collectionName").asText();
+                    Platform.runLater(() -> {
+                        song.setArtworkUrl(artUrl);
+                        song.setAlbum(album);
+                        songTable.refresh();
+                    });
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }).start();
     }
 }

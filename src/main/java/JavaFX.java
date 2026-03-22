@@ -9,10 +9,11 @@ public class JavaFX extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Main.fxml"));
         Parent root = loader.load();
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        primaryStage.setScene(scene);
         primaryStage.setTitle("Song Rater!");
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
