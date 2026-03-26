@@ -83,9 +83,7 @@ public class Controller implements Initializable {
                 }
             });
             songTable.setEditable(true);
-// wrap songList in a filtered list
             javafx.collections.transformation.FilteredList<Song> filteredList = new javafx.collections.transformation.FilteredList<>(songList, p -> true);
-
             searchField.textProperty().addListener((observable, oldValue, newValue) -> {
                 filteredList.setPredicate(song -> {
                     if (newValue == null || newValue.isEmpty()) {
@@ -104,7 +102,8 @@ public class Controller implements Initializable {
 
             javafx.collections.transformation.SortedList<Song> sortedList = new javafx.collections.transformation.SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(songTable.comparatorProperty());
-            songTable.setItems(sortedList);        }
+            songTable.setItems(sortedList);
+        }
     }
 
     // Load playlist from file

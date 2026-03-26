@@ -73,10 +73,24 @@
     -fx-background-color: #282828;
     -fx-text-fill: white;
     -fx-border-color: transparent;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
 }
 
+.combo-box .arrow-button {
+    -fx-background-color: #282828;
+    -fx-background-radius: 0 4 4 0;
+}
+
+.combo-box .arrow {
+    -fx-background-color: white;
+}
+
+.combo-box-base {
+    -fx-background-color: #282828;
+    -fx-border-color: transparent;
+    -fx-background-radius: 4;
+}
 .combo-box .list-cell {
     -fx-background-color: #282828;
     -fx-text-fill: white;
