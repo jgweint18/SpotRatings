@@ -1,4 +1,4 @@
-# SpotStats
+# SpotRatings
 
 A JavaFX music rating application. Still in progress.
 
